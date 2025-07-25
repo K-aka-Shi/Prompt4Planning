@@ -52,5 +52,5 @@ pip install -r requirements.txt
 
 ```bash
 python app.py
-Puis ouvre http://localhost:5000 dans ton navigateur.
 ```
+Puis ouvre http://localhost:5000 dans ton navigateur.
