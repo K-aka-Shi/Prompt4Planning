@@ -1,13 +1,15 @@
 import io
 import os
+from dotenv import load_dotenv
 from flask import Flask, flash, render_template, request, redirect, send_file, url_for, jsonify
 from tinydb import TinyDB, Query
 from datetime import datetime
 import json
 
-
+load_dotenv() # Charger pour charger les variables d'environnement depuis .env
 
 app = Flask(__name__)
+app.secret_key = os.environ.get('SECRET_KEY', 'clef_secrete_par_defaut')
 db = TinyDB('data.json')
 prof_table = db.table('profs')
 
@@ -151,4 +153,4 @@ def edit_prompt_msg():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)
