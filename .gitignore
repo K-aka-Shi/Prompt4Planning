@@ -1,0 +1,19 @@
+
+# Environnements Python virtuels
+.venv/
+__pycache__/
+*.pyc
+
+# Fichiers système
+.DS_Store
+Thumbs.db
+
+# IDE & éditeurs
+.vscode/
+.idea/
+
+# Fichier TinyDB
+data.json
+
+# Logs
+*.log

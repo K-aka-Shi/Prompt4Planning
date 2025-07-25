@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Éditer le message du prompt</title>
+</head>
+<body>
+  <h1>Message personnalisé du prompt</h1>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class="flashes">
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <form method="POST">
+    <textarea name="intro" rows="10" cols="80">{{ intro }}</textarea><br>
+    <button type="submit">💾 Sauvegarder</button>
+  </form>
+
+  <br>
+  <a href="{{ url_for('index') }}">⬅️ Retour à l’accueil</a>
+</body>
+</html>

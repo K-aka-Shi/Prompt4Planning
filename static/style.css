@@ -1,0 +1,138 @@
+/* Base */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8fff8;
+  color: #333;
+  margin: 0;
+  padding: 20px;
+}
+
+/* Flash messages */
+.flashes {
+  background: #e1f5e1;
+  border-left: 5px solid #4caf50;
+  padding: 10px;
+  margin-bottom: 20px;
+  list-style: none;
+  border-radius: 4px;
+}
+
+/* Container split */
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+}
+
+/* Formulaire (à gauche) */
+form[action="/save_prof"] {
+  flex: 1;
+  min-width: 300px;
+  background: #ffffff;
+  border: 1px solid #cceacc;
+  padding: 20px;
+  border-radius: 6px;
+}
+
+/* Champs de formulaire */
+form label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="number"],
+form input[type="time"],
+form input[type="file"],
+form textarea {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Disponibilités */
+fieldset {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #d0e8d0;
+  background-color: #f4fff4;
+  border-radius: 4px;
+}
+
+.day-block {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 6px;
+}
+
+/* Liste des professeurs (à droite) */
+ul {
+  flex: 1;
+  min-width: 300px;
+  list-style: none;
+  padding: 0;
+}
+
+ul li {
+  background: #ffffff;
+  border: 1px solid #cceacc;
+  padding: 10px 14px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+ul li strong {
+  color: #2e7d32;
+}
+
+/* Liens de modification */
+a.edit-btn,
+a[href^="/delete"] {
+  margin-left: 8px;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+a.edit-btn {
+  color: #2196f3;
+}
+
+a[href^="/delete"] {
+  color: #d32f2f;
+}
+
+/* Boutons */
+button,
+a.button {
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 4px;
+  margin-top: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+button:hover,
+a.button:hover {
+  background-color: #388e3c;
+}
+
+/* Section boutons en bas */
+hr {
+  margin: 30px 0 20px;
+  border: none;
+  border-top: 1px solid #ccc;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .container {
+    flex-direction: column;
+  }
+}

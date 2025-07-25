@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestion des Professeurs</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flashes">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+  <div class="container">
+    <h1>Professeurs</h1>
+
+    <form action="/save_prof" method="post">
+      <input type="hidden" name="id" id="prof-id">
+      <label>Nom:</label>
+      <input type="text" name="nom" id="nom" required>
+
+      <label>Matières:</label>
+      <input type="text" name="matieres" id="matieres" required>
+
+      <label>Max heures/jour:</label>
+      <input type="number" name="max_heures" id="max_heures" required>
+
+      <fieldset>
+        <legend>Disponibilités</legend>
+        {% for day in ['lundi','mardi','mercredi','jeudi','vendredi','samedi'] %}
+          <div class="day-block">
+            <label>{{ day.capitalize() }}:</label>
+            <input type="time" name="{{ day }}_start">
+            <input type="time" name="{{ day }}_end">
+          </div>
+        {% endfor %}
+      </fieldset>
+      <button type="submit">Enregistrer</button>
+    </form>
+
+    <hr>
+    <h2>Liste des professeurs</h2>
+    <ul>
+      {% for prof in profs %}
+        <li>
+          <strong>{{ prof.nom }}</strong> | {{ prof.matieres }}
+        <a href="#" class="edit-btn" data-prof='{{ prof | tojson | safe }}' data-id="{{ prof.doc_id }}">✏️</a>
+        <a href="/delete/{{ prof.doc_id }}" onclick="return confirm('Supprimer ce prof ?')">🗑</a>
+        </li>
+      {% endfor %}
+    </ul>
+
+    <hr>
+    <a class="button" href="/prompt">📄 Générer le prompt</a>
+    <a class="button" href="{{ url_for('edit_prompt_msg') }}">⚙️ Modifier le message du prompt</a>
+    <hr>
+    <form action="/export">
+      <button type="submit">Exporter JSON</button>
+    </form>
+    <h3>Importer un fichier JSON</h3>
+    <form id="import-form" action="/import_json" method="post" enctype="multipart/form-data">
+        <input type="file" name="file" accept=".json" required>
+        <button type="submit">Importer JSON</button>
+    </form>
+</div>
+
+  <script src="/static/script.js"></script>
+</body>
+</html>
+
