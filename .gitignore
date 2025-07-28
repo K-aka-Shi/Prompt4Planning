@@ -3,6 +3,7 @@
 .venv/
 __pycache__/
 *.pyc
+.env
 
 # Fichiers système
 .DS_Store
