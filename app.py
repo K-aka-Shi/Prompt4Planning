@@ -5,22 +5,29 @@ from flask import Flask, flash, render_template, request, redirect, send_file, u
 from tinydb import TinyDB, Query
 from datetime import datetime
 import json
+from flask_basicauth import BasicAuth
 
 load_dotenv() # Charger pour charger les variables d'environnement depuis .env
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'clef_secrete_par_defaut')
+app.config['BASIC_AUTH_USERNAME'] = os.environ.get('BASIC_AUTH_USERNAME', 'admin')
+app.config['BASIC_AUTH_PASSWORD'] = os.environ.get('BASIC_AUTH_PASSWORD', 'admin')
 db = TinyDB('data.json')
 prof_table = db.table('profs')
 
+basic_auth = BasicAuth(app)
+
 # Page principale
 @app.route('/')
+@basic_auth.required
 def index():
     profs = prof_table.all()
     return render_template('index.html', profs=profs)
 
 # Ajouter ou modifier un prof
 @app.route('/save_prof', methods=['POST'])
+@basic_auth.required
 def save_prof():
     data = request.form.to_dict(flat=False)
     prof_id = data.get('id', [None])[0]
@@ -56,6 +63,7 @@ def delete(prof_id):
 
 # Générer le prompt
 @app.route('/prompt')
+@basic_auth.required
 def prompt():
     profs = prof_table.all()
 
@@ -87,6 +95,7 @@ def prompt():
 # Export JSON
 
 @app.route('/export')
+@basic_auth.required
 def export():
     profs = prof_table.all()
     export_json = json.dumps(profs, indent=2, ensure_ascii=False)
@@ -105,6 +114,7 @@ def export():
 
 
 @app.route('/import_json', methods=['POST'])
+@basic_auth.required
 def import_json():
     file = request.files.get('file')
     if not file:
@@ -130,6 +140,7 @@ def import_json():
 
 
 @app.route('/edit_prompt_msg', methods=['GET', 'POST'])
+@basic_auth.required
 def edit_prompt_msg():
     settings_path = "settings.json"
 
