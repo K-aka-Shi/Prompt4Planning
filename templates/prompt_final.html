@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Prompt final</title>
+  <link rel="icon" type="image/png" href="/static/icon.png">
+  <link rel="stylesheet" href="/static/style.css">
+  <style>
+    .prompt-block {
+      background: #f8fff8;
+      border: 1px solid #cceacc;
+      border-radius: 8px;
+      padding: 18px 22px;
+      max-width: 900px;
+      margin: 32px auto 18px auto;
+      font-size: 1.05rem;
+      color: #222;
+      box-shadow: 0 1px 4px rgba(60,120,60,0.03);
+      white-space: pre-wrap;
+      word-break: break-word;
+      position: relative;
+    }
+    .btn-row {
+      display: flex;
+      gap: 16px;
+      justify-content: flex-start;
+      align-items: center;
+      margin: 0 0 32px 32px;
+    }
+    .copied-tooltip {
+      visibility: hidden;
+      opacity: 0;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 110%;
+      background: #43a047;
+      color: #fff;
+      padding: 4px 12px;
+      border-radius: 5px;
+      font-size: 0.95em;
+      box-shadow: 0 1px 4px rgba(60,120,60,0.07);
+      transition: opacity 0.2s;
+      z-index: 10;
+    }
+    .copied-tooltip.show {
+      visibility: visible;
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Prompt final généré</h1>
+    <a href="{{ url_for('index') }}">⬅️ Retour à l’accueil</a>
+    <div class="btn-row">
+      <div style="position:relative;display:inline-block;">
+        <button type="button" id="copy-prompt" class="button">📋 Copier le prompt</button>
+        <span id="tooltip-prompt" class="copied-tooltip">Copié !</span>
+      </div>
+    </div>
+    <div class="prompt-block" id="prompt-block">
+      {{ prompt|safe }}
+    </div>
+  </div>
+  <script>
+    document.getElementById('copy-prompt').onclick = function() {
+      const el = document.getElementById('prompt-block');
+      let text = el.innerText || el.textContent;
+      navigator.clipboard.writeText(text);
+      showTooltip('tooltip-prompt');
+    };
+    function showTooltip(id) {
+      const tooltip = document.getElementById(id);
+      tooltip.classList.add('show');
+      setTimeout(() => {
+        tooltip.classList.remove('show');
+      }, 1200);
+    }
+  </script>
+</body>
+</html>

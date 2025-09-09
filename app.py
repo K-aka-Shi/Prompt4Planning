@@ -163,5 +163,41 @@ def edit_prompt_msg():
     return render_template('edit_prompt_msg.html', intro=settings['intro'])
 
 
+@app.route('/prompt_final')
+@basic_auth.required
+def prompt_final():
+    # Génère le prompt comme dans /prompt
+    profs = prof_table.all()
+    settings_path = "settings.json"
+    if os.path.exists(settings_path):
+        with open(settings_path, 'r', encoding='utf-8') as f:
+            settings = json.load(f)
+            intro = settings.get('intro', '')
+    else:
+        intro = ""
+    lines = [intro + "\n"]
+    for prof in profs:
+        dispo = prof.get("disponibilites", {})
+        lines.append(f"- **{prof['nom']}**")
+        lines.append(f"  - Matières : {prof['matieres']}")
+        lines.append("  - Disponibilités :")
+        for jour, heure in dispo.items():
+            if heure['start'] and heure['end']:
+                lines.append(f"    - {jour.capitalize()} : {heure['start']}–{heure['end']}")
+            else:
+                lines.append(f"    - {jour.capitalize()} : indisponible")
+        lines.append(f"  - Contraintes : max {prof['max_heures']}h/jour\n")
+    prompt = "\n".join(lines)
+    return render_template('prompt_final.html', prompt=prompt)
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
+
+# 404
+@app.errorhandler(404)
+def not_found(error):
+    return "Page not found", 404
+
+# command to run the app
+# flask run --host=

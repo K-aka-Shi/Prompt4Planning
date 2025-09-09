@@ -3,9 +3,210 @@
 <head>
   <meta charset="UTF-8">
   <title>Éditer le message du prompt</title>
+  <link rel="icon" type="image/png" href="/static/icon.png">
+
+  <style>
+/* --- edit_prompt_msg.html harmonisé avec index.html --- */
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: linear-gradient(120deg, #e8f5e9 0%, #f8fff8 100%);
+  color: #222;
+  margin: 0;
+  padding: 0;
+}
+
+.flashes {
+  background: #d1f7d1;
+  border-left: 5px solid #43a047;
+  padding: 12px 18px;
+  margin: 24px auto 0 auto;
+  max-width: 600px;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.container {
+  max-width: 900px;
+  margin: 32px auto;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 16px rgba(60,120,60,0.07);
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+h1, h2 {
+  color: #388e3c;
+  margin-bottom: 12px;
+  font-weight: 600;
+  text-align: center;
+}
+
+form {
+  background: #f4fff4;
+  border: 1px solid #cceacc;
+  border-radius: 8px;
+  padding: 24px;
+  margin-bottom: 0;
+  box-shadow: 0 1px 6px rgba(60,120,60,0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: stretch;
+}
+
+form label {
+  font-weight: 500;
+  color: #2e7d32;
+  margin-bottom: 6px;
+}
+
+textarea {
+  font-family: Arial, Helvetica, sans-serif;
+  width: 100%;
+  min-height: 160px;
+  font-size: 1.1rem;
+  padding: 12px;
+  border: 1px solid #b2dfdb;
+  border-radius: 5px;
+  background: #f9fff9;
+  transition: border-color 0.2s;
+  color: #222;
+  resize: vertical;
+  margin-bottom: 8px;
+}
+
+textarea:focus {
+  border-color: #43a047;
+  outline: none;
+}
+
+.btn-row {
+  display: flex;
+  gap: 16px;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 8px;
+}
+
+button[type="submit"], button[type="button"], a.button {
+  background: linear-gradient(90deg, #43a047 70%, #388e3c 100%);
+  color: #fff;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 5px;
+  margin-top: 16px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  box-shadow: 0 1px 4px rgba(60,120,60,0.07);
+  transition: background 0.2s;
+  text-decoration: none;
+  display: unset; /* retire inline-block pour éviter la largeur 100% */
+  min-width: 0;
+  width: auto;
+  flex: unset;
+}
+
+button[type="submit"]:hover, button[type="button"]:hover, a.button:hover {
+  background: linear-gradient(90deg, #388e3c 70%, #43a047 100%);
+}
+
+a[href] {
+  color: #1976d2;
+  background: #e3f2fd;
+  padding: 8px 18px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background 0.2s;
+  display: inline-block;
+  margin: 0 auto 0 0;
+}
+
+a[href]:hover {
+  background: #bbdefb;
+}
+
+hr {
+  margin: 32px 0 24px;
+  border: none;
+  border-top: 1px solid #cceacc;
+}
+
+p, ul {
+  background: #f8fff8;
+  border: 1px solid #cceacc;
+  border-radius: 8px;
+  padding: 18px 22px;
+  max-width: 700px;
+  margin: 0 auto 18px auto;
+  font-size: 1.05rem;
+  color: #222;
+  box-shadow: 0 1px 4px rgba(60,120,60,0.03);
+}
+
+ul {
+  list-style: disc inside;
+  margin-bottom: 18px;
+  padding-left: 0;
+}
+
+.copied-tooltip {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 110%;
+  background: #43a047;
+  color: #fff;
+  padding: 4px 12px;
+  border-radius: 5px;
+  font-size: 0.95em;
+  box-shadow: 0 1px 4px rgba(60,120,60,0.07);
+  transition: opacity 0.2s;
+  z-index: 10;
+}
+.copied-tooltip.show {
+  visibility: visible;
+  opacity: 1;
+}
+
+@media (max-width: 800px) {
+  .container {
+    padding: 16px 6px;
+    max-width: 98vw;
+  }
+  form {
+    padding: 16px;
+  }
+  p, ul {
+    max-width: 98vw;
+    padding: 12px 6px;
+  }
+  textarea {
+    min-width: 120px;
+  }
+}
+</style>
+
 </head>
 <body>
   <h1>Message personnalisé du prompt</h1>
+  <a href="{{ url_for('index') }}">⬅️ Retour à l’accueil</a>
+
+  <!-- À placer sous le titre ou au-dessus du formulaire -->
+  <div class="info-message" style="background:#eafbe9;border:1px solid #cceacc;border-radius:8px;padding:18px 22px;max-width:900px;margin:0 auto 24px auto;font-size:1.05rem;color:#222;box-shadow:0 1px 4px rgba(60,120,60,0.03);">
+    Cette page vous permet de personnaliser le message d’introduction du prompt utilisé pour générer l’emploi du temps.<br>
+      - <strong>Zone de texte :</strong> Modifiez le texte selon vos besoins, puis cliquez sur « Sauvegarder » pour enregistrer vos changements. <br>
+      - <strong>Bouton Copier :</strong> Utilisez le bouton « Copier ce texte » pour copier rapidement votre message personnalisé. <br>
+      - <strong>Prompt par défaut :</strong> Vous pouvez également copier le texte du prompt par défaut en un clic. <br>
+    <br>
+    Revenez à l’accueil à tout moment via le lien en haut de la page.
+  </div>
 
   {% with messages = get_flashed_messages() %}
     {% if messages %}
@@ -18,11 +219,65 @@
   {% endwith %}
 
   <form method="POST">
-    <textarea name="intro" rows="10" cols="80">{{ intro }}</textarea><br>
-    <button type="submit">💾 Sauvegarder</button>
+    <textarea name="intro" id="intro-textarea" rows="20" cols="80">{{ intro }}</textarea><br>
+    <div class="btn-row">
+      <button type="submit">💾 Sauvegarder</button>
+      <div style="position:relative;display:inline-block;">
+        <button type="button" id="copy-custom" class="button">📋 Copier ce texte</button>
+        <span id="tooltip-custom" class="copied-tooltip">Copié !</span>
+      </div>
+    </div>
   </form>
 
   <br>
-  <a href="{{ url_for('index') }}">⬅️ Retour à l’accueil</a>
+
+  <h2>Prompt par défaut</h2>
+  <p id="default-prompt">
+    Tu es un assistant spécialisé dans l’organisation scolaire. <br>
+    Ta mission est de créer un emploi du temps hebdomadaire clair, équitable et optimisé en fonction des contraintes suivantes. <br>
+    <br>
+    <strong>Règles à respecter :</strong><br>
+      - Respecter strictement les disponibilités et contraintes indiquées.<br>
+      - Répartir les cours de manière équitable entre les professeurs.<br>
+      - Éviter tout conflit d’horaires.<br>
+      - Si une contrainte est impossible à respecter, ou si les données contiennent une incohérence (par ex. chevauchement d’horaires, heures max dépassées, prof indisponible partout…), NE PAS générer d’emploi du temps.<br>
+      - Dans ce cas, expliquer clairement le problème détecté, sans proposer de planning approximatif.<br>
+    <br>
+    Si tout est cohérent, présenter l’emploi du temps final sous forme de tableau lisible (jours en colonnes, heures en lignes). <br>
+    <br>
+    <strong>Voici les contraintes et disponibilités des professeurs :</strong><br>
+  </p>
+  <div class="btn-row">
+    <div style="position:relative;display:inline-block;">
+      <button type="button" id="copy-default" class="button">📋 Copier le prompt par défaut</button>
+      <span id="tooltip-default" class="copied-tooltip">Copié !</span>
+    </div>
+  </div>
+
+<script>
+document.getElementById('copy-custom').onclick = function() {
+  const textarea = document.getElementById('intro-textarea');
+  textarea.select();
+  document.execCommand('copy');
+  showTooltip('tooltip-custom');
+};
+
+document.getElementById('copy-default').onclick = function() {
+  const el = document.getElementById('default-prompt');
+  // Get text content, preserving line breaks
+  let text = el.innerText || el.textContent;
+  navigator.clipboard.writeText(text);
+  showTooltip('tooltip-default');
+};
+
+function showTooltip(id) {
+  const tooltip = document.getElementById(id);
+  tooltip.classList.add('show');
+  setTimeout(() => {
+    tooltip.classList.remove('show');
+  }, 1200);
+}
+</script>
+
 </body>
 </html>
