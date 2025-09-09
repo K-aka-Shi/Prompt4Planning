@@ -191,13 +191,28 @@ def prompt_final():
     return render_template('prompt_final.html', prompt=prompt)
 
 
+@app.route('/logout')
+def logout():
+    # BasicAuth ne gère pas la session, on affiche juste un message
+    return render_template('logout.html')
+
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
 
-# 404
+# Erreurs
 @app.errorhandler(404)
-def not_found(error):
-    return "Page not found", 404
+def not_found(e):
+    return render_template('404.html'), 404
 
-# command to run the app
-# flask run --host=
+@app.errorhandler(403)
+def forbidden(e):
+    return render_template('403.html'), 403
+
+@app.errorhandler(500)
+def server_error(e):
+    return render_template('500.html'), 500
+
+@app.errorhandler(400)
+def bad_request(e):
+    return render_template('400.html'), 400
